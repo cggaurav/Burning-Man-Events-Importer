@@ -1,135 +1,69 @@
 require 'rubygems'
 require 'google/api_client'
 require 'json'
+require 'pp'
+require 'date'
 
 client = Google::APIClient.new
-client.authorization.client_id = '245995055571-2rtmfneunrt9o9se61eo9aeqm3ou55ff.apps.googleusercontent.com'
-client.authorization.client_secret = '6s7rUSPdK3ljCVF6awSVyXHT'
+client.authorization.client_id = ''
+client.authorization.client_secret = ''
 client.authorization.scope = 'https://www.googleapis.com/auth/calendar'
-client.authorization.access_token = "ya29.AHES6ZSkrXp1qN860yVTTUg5y6AGhbFRXbCgmCm7F7K5vcq4lVeyWg"
+client.authorization.access_token = ""
 calendar = client.discovered_api('calendar', 'v3')
 
-event = {
-  'summary' => 'Appointment',
-  'location' => 'Somewhere',
-  'start' => {
-    'dateTime' => '2013-08-03T10:00:00.000-07:00'
-  },
-  'end' => {
-    'dateTime' => '2013-08-03T10:25:00.000-07:00'
-  },
-  'attendees' => [
-    {
-      'email' => 'cggaurav@gmail.com'
+# pp DateTime.parse("2013-08-28 17:00:00").to_s
+
+# http://bit.ly/bm13events
+count = 0;
+events = JSON.parse(File.read('events.json'));
+events[0..100].each do |event|
+  # puts event.inspect
+  event['occurrence_set'].each do |timespan|
+    # pp event
+
+    description = event['description']
+    description += ("\n" +  "Visit " + event['url']) rescue ""
+    description += ("\n" +  event['event_type']['abbr']) rescue ""
+
+    description += ("\n" +  event['event_type']['label']) rescue ""
+
+    name = event['hosted_by_camp']['name'] rescue ""
+    new_event = {
+      "kind" => "calendar#event",
+      "status" => "confirmed",
+      "htmlLink" => event['url'],
+      "summary" => event['title'],
+      "description" => description,
+      "location" => event['print_description'],
+      "organizer" => {
+        "email" => "",
+        "displayName" => name
+      },
+      "start" => {
+        "dateTime" => DateTime.parse(timespan['start_time']).to_s.gsub("+00:00", "-06:00")
+      },
+      "end" => {
+        "dateTime" => DateTime.parse(timespan['end_time']).to_s.gsub("+00:00", "-06:00")
+      },
+      "transparency" => "transparent",
+      "attendees" => [
+        {
+          "email"  => "support@burningman.com"
+        }
+      ],
+      "attendeesOmitted" => false,
+      "anyoneCanAddSelf" => true,
+      "guestsCanInviteOthers" => true,
+      "guestsCanModify" => true,
+      "guestsCanSeeOtherGuests" => true
     }
-  ]
-}
-event = {
-  "kind": "calendar#event",
-  "etag": etag,
-  "id": string,
-  "status": string,
-  "htmlLink": string,
-  "created": datetime,
-  "updated": datetime,
-  "summary": string,
-  "description": string,
-  "location": string,
-  "colorId": string,
-  "creator": {
-    "id": string,
-    "email": string,
-    "displayName": string,
-    "self": boolean
-  },
-  "organizer": {
-    "id": string,
-    "email": string,
-    "displayName": string,
-    "self": boolean
-  },
-  "start": {
-    "date": date,
-    "dateTime": datetime,
-    "timeZone": string
-  },
-  "end": {
-    "date": date,
-    "dateTime": datetime,
-    "timeZone": string
-  },
-  "endTimeUnspecified": boolean,
-  "recurrence": [
-    string
-  ],
-  "recurringEventId": string,
-  "originalStartTime": {
-    "date": date,
-    "dateTime": datetime,
-    "timeZone": string
-  },
-  "transparency": string,
-  "visibility": string,
-  "iCalUID": string,
-  "sequence": integer,
-  "attendees": [
-    {
-      "id": string,
-      "email": string,
-      "displayName": string,
-      "organizer": boolean,
-      "self": boolean,
-      "resource": boolean,
-      "optional": boolean,
-      "responseStatus": string,
-      "comment": string,
-      "additionalGuests": integer
-    }
-  ],
-  "attendeesOmitted": boolean,
-  "extendedProperties": {
-    "private": {
-      (key): string
-    },
-    "shared": {
-      (key): string
-    }
-  },
-  "hangoutLink": string,
-  "gadget": {
-    "type": string,
-    "title": string,
-    "link": string,
-    "iconLink": string,
-    "width": integer,
-    "height": integer,
-    "display": string,
-    "preferences": {
-      (key): string
-    }
-  },
-  "anyoneCanAddSelf": boolean,
-  "guestsCanInviteOthers": boolean,
-  "guestsCanModify": boolean,
-  "guestsCanSeeOtherGuests": boolean,
-  "privateCopy": boolean,
-  "locked": boolean,
-  "reminders": {
-    "useDefault": boolean,
-    "overrides": [
-      {
-        "method": string,
-        "minutes": integer
-      }
-    ]
-  },
-  "source": {
-    "url": string,
-    "title": string
-  }
-}
-result = client.execute(:api_method => calendar.events.insert,
-                        :parameters => {'calendarId' => 'nft1rtut8a1khvrjg2pn4dqcs0@group.calendar.google.com'},
-                        :body => JSON.dump(event),
-                        :headers => {'Content-Type' => 'application/json'})
-print result.data.id
+    result = client.execute(:api_method => calendar.events.insert,
+                            :parameters => {'calendarId' => 'n4llvehs9ea900fnp7t4arn1bo@group.calendar.google.com'},
+                            :body => JSON.dump(new_event),
+                            :headers => {'Content-Type' => 'application/json'})
+    # pp new_event
+    pp result if(result.data.id == nil)
+    count += 1
+    pp count
+  end
+end
