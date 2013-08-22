@@ -1,0 +1,139 @@
+var json = {
+  "hosted_by_camp": {
+    "name": "Dr Le Tawdries Apothecary",
+    "id": 5133
+  },
+  "occurrence_set": [{
+    "start_time": "2013-08-28 17:00:00",
+    "end_time": "2013-08-28 19:00:00"
+  }],
+  "description": "Karaoke interspersed with space lounge music.  \r\n\r\nIf you want to sing then why not stop by!?",
+  "title": "049 Lounge/Karaoke Party!",
+  "url": "http://www.049events.com/dr_le_tawdry/",
+  "year": {
+    "id": 9,
+    "year": "2013"
+  },
+  "all_day": false,
+  "id": 10152,
+  "print_description": "Sing with us!  Need I say more?",
+  "check_location": false,
+  "slug": "049-loungekaraoke-party",
+  "other_location": "",
+  "event_type": {
+    "abbr": "prty",
+    "label": "Gathering / Party"
+  }
+};
+
+var resource = {
+  "summary": "Appointment",
+  "location": "Somewhere",
+  "start": {
+    "dateTime": "2013-08-21T10:00:00.000-07:00"
+  },
+  "end": {
+    "dateTime": "2013-08-22T10:25:00.000-07:00"
+  }
+};
+
+var eventinsert = {
+  "kind": "calendar#event",
+  "etag": etag,
+  "id": string,
+  "status": string,
+  "htmlLink": string,
+  "created": datetime,
+  "updated": datetime,
+  "summary": string,
+  "description": string,
+  "location": string,
+  "colorId": string,
+  "creator": {
+    "id": string,
+    "email": string,
+    "displayName": string,
+    "self": boolean
+  },
+  "organizer": {
+    "id": string,
+    "email": string,
+    "displayName": string,
+    "self": boolean
+  },
+  "start": {
+    "date": date,
+    "dateTime": datetime,
+    "timeZone": string
+  },
+  "end": {
+    "date": date,
+    "dateTime": datetime,
+    "timeZone": string
+  },
+  "endTimeUnspecified": boolean,
+  "recurrence": [
+    string
+  ],
+  "recurringEventId": string,
+  "originalStartTime": {
+    "date": date,
+    "dateTime": datetime,
+    "timeZone": string
+  },
+  "transparency": string,
+  "visibility": string,
+  "iCalUID": string,
+  "sequence": integer,
+  "attendees": [{
+    "id": string,
+    "email": string,
+    "displayName": string,
+    "organizer": boolean,
+    "self": boolean,
+    "resource": boolean,
+    "optional": boolean,
+    "responseStatus": string,
+    "comment": string,
+    "additionalGuests": integer
+  }],
+  "attendeesOmitted": boolean,
+  "extendedProperties": {
+    "private": {
+      (key): string
+    },
+    "shared": {
+      (key): string
+    }
+  },
+  "hangoutLink": string,
+  "gadget": {
+    "type": string,
+    "title": string,
+    "link": string,
+    "iconLink": string,
+    "width": integer,
+    "height": integer,
+    "display": string,
+    "preferences": {
+      (key): string
+    }
+  },
+  "anyoneCanAddSelf": boolean,
+  "guestsCanInviteOthers": boolean,
+  "guestsCanModify": boolean,
+  "guestsCanSeeOtherGuests": boolean,
+  "privateCopy": boolean,
+  "locked": boolean,
+  "reminders": {
+    "useDefault": boolean,
+    "overrides": [{
+      "method": string,
+      "minutes": integer
+    }]
+  },
+  "source": {
+    "url": string,
+    "title": string
+  }
+};
